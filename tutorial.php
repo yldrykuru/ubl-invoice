@@ -1,10 +1,20 @@
-# Yldrykuru UBL-Invoice Generator
+<?php
 
-sabre/xml Kütüphanesine ihtiyaç duyuyor.
+namespace Yldrykuru\Ublinvoice\Tests;
 
-1. Direk Kullanım Örneği   
-      ```php
-       $invoice = (new \Yldrykuru\Ublinvoice\Invoice())
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Test an UBL2.1 invoice document
+ */
+class SimpleInvoiceTest extends TestCase
+{
+    private $schema = 'http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+
+    /** @test */
+    public function testIfXMLIsValid()
+    {
+        $invoice = (new \Yldrykuru\Ublinvoice\Invoice())
             ->setUBLVersionID("2.1")
             ->setCustomizationID("TR1.2")
             ->setProfileID("TEMELFATURA")
@@ -139,15 +149,17 @@ sabre/xml Kütüphanesine ihtiyaç duyuyor.
                         (new \Yldrykuru\Ublinvoice\Price())->setPriceAmount(0.15)->setUnitCode("KWH")
                     )
             ]);
-      // Test created object
-      // Use \Yldrykuru\Ublinvoice\Generator to generate an XML string
-      $generator = new \Yldrykuru\Ublinvoice\Generator();
-      $outputXMLString = $generator->invoice($invoice);
 
-      // Create PHP Native DomDocument object, that can be
-      // used to validate the generate XML
-      $dom = new \DOMDocument;
-      $dom->loadXML($outputXMLString);
 
-      $dom->save('KAYIT PATHI');
-      ```
+        $generator = new \Yldrykuru\Ublinvoice\Generator();
+        $outputXMLString = $generator->invoice($invoice);
+
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($outputXMLString);
+
+        $dom->save('./tests/SimpleInvoiceTest.xml');
+
+        $this->assertEquals(true, $dom->schemaValidate($this->schema));
+    }
+}

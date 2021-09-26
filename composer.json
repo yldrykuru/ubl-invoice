@@ -1,0 +1,13 @@
+{
+    "name": "yldrykuru/ublinvoice",
+    "description": "Yldrykuru UBL Fatura XML Oluşturma Kütüphanesi",
+    "require": {
+        "php": "^7.1||^8.0",
+        "sabre/xml": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yldrykuru\\Ublinvoice\\": "./src\\Yldrykuru\\ublinvoice"
+        }
+    }
+}
