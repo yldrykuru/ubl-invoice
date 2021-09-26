@@ -1,13 +1,30 @@
 {
     "name": "yldrykuru/ublinvoice",
-    "description": "Yldrykuru UBL Fatura XML Oluşturma Kütüphanesi",
-    "require": {
+    "description": "UBL-TR 2.1 Generator",
+    "keywords": [
+        "yldrykuru",
+        "ublinvoice"
+    ],
+    "homepage": "https://github.com/yldrykuru/ublinvoice",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Yıldıray Kuru",
+            "email": "yldrykuru@gmail.com",
+            "role": "Developer"
+        }
+    ],
+      "require": {
         "php": "^7.1||^8.0",
         "sabre/xml": "^2.1"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
     "autoload": {
         "psr-4": {
-            "Yldrykuru\\Ublinvoice\\": "./src\\Yldrykuru\\ublinvoice"
+            "Yldrykuru\\Ublinvoice\\": "src"
         }
     }
 }
