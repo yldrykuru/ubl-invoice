@@ -107,7 +107,7 @@ class Address implements XmlSerializable
     /**
      * @return Country
      */
-    public function getCountry(): ?Country
+    public function getCountry(): ?Address
     {
         return $this->country;
     }

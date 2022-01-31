@@ -81,7 +81,11 @@ class TaxTotal implements XmlSerializable
         ]);
 
         foreach ($this->taxSubTotals as $taxSubTotal) {
-            $writer->write([Schema::CAC . 'TaxSubtotal' => $taxSubTotal]);
+
+            if ($taxSubTotal->getTaxamount() or $taxSubTotal->getTaxableAmount() != 0)
+            {
+                $writer->write([Schema::CAC . 'TaxSubtotal' => $taxSubTotal]);
+            }
         }
     }
 }

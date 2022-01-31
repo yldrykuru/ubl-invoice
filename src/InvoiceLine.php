@@ -35,18 +35,18 @@ class InvoiceLine implements XmlSerializable
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getInvoicedQuantity(): ?float
+    public function getInvoicedQuantity(): ?int
     {
         return $this->invoicedQuantity;
     }
 
     /**
-     * @param float $invoicedQuantity
+     * @param int $invoicedQuantity
      * @return InvoiceLine
      */
-    public function setInvoicedQuantity(?float $invoicedQuantity): InvoiceLine
+    public function setInvoicedQuantity(?int $invoicedQuantity): InvoiceLine
     {
         $this->invoicedQuantity = $invoicedQuantity;
         return $this;
@@ -175,7 +175,7 @@ class InvoiceLine implements XmlSerializable
         $writer->write([
             [
                 'name' => Schema::CBC . 'InvoicedQuantity',
-                'value' => number_format($this->invoicedQuantity, 2, '.', ''),
+                'value' => $this->invoicedQuantity,
                 'attributes' => [
                     'unitCode' => $this->unitCode
                 ]
@@ -188,9 +188,12 @@ class InvoiceLine implements XmlSerializable
                 ]
             ]
         ]);
-        $writer->write([
-            Schema::CAC . 'AllowanceCharge' => $this->allowanceCharge,
-        ]);
+        if ($this->allowanceCharge !== null)
+        {
+            $writer->write([
+                Schema::CAC . 'AllowanceCharge' => $this->allowanceCharge,
+            ]);
+        }
         if ($this->taxTotal !== null) {
             $writer->write([
                 Schema::CAC . 'TaxTotal' => $this->taxTotal

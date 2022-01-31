@@ -166,9 +166,12 @@ class Party implements XmlSerializable
      */
     public function xmlSerialize(Writer $writer)
     {
-        $writer->write([
-            Schema::CBC . 'WebsiteURI' => $this->websiteURI
-        ]);
+        /*if ($this->name !== null)
+        {
+            $writer->write([
+                Schema::CBC . 'WebsiteURI' => $this->websiteURI
+            ]);
+        }*/
 
         if ($this->partyIdentifications !== null) {
             foreach ($this->partyIdentifications as $partyIdentification) {

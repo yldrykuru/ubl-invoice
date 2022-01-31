@@ -19,8 +19,10 @@ class Invoice implements XmlSerializable
     private $issueDate;
     private $issueTime;
     private $invoiceTypeCode = InvoiceTypeCode::SATIS;
+    private $note;
     private $documentCurrencyCode = 'TRY';
     private $lineCountNumeric;
+    private $additionalDocumentReferences;
     private $invoicePeriod;
     private $signature;
     private $accountingSupplierParty;
@@ -50,7 +52,10 @@ class Invoice implements XmlSerializable
     //    return $this;
     //}
     //#endregion
-
+    public function __construct()
+    {
+        $this->additionalDocumentReferences = [];
+    }
     #region UBLVersionID
     /**
      * @return string
@@ -112,6 +117,26 @@ class Invoice implements XmlSerializable
     public function setId(?string $id): Invoice
     {
         $this->id = $id;
+        return $this;
+    }
+    #endregion
+
+    #region Note
+    /**
+     * @return mixed
+     */
+    public function netNote(): ?string
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param mixed $id
+     * @return Invoice
+     */
+    public function setNote(?string $note): Invoice
+    {
+        $this->note = $note;
         return $this;
     }
     #endregion
@@ -270,7 +295,7 @@ class Invoice implements XmlSerializable
     {
         return $this->signature;
     }
-    
+
     /**
      * @param Signature $invoicePeriod
      * @return Invoice
@@ -402,6 +427,25 @@ class Invoice implements XmlSerializable
     }
     #endregion
 
+    #region AdditionalDocumentReference
+    /**
+     * @return $additionalDocumentReference
+     */
+    public function getAdditionalDocumentReferences(): ?array
+    {
+        return $this->additionalDocumentReferences;
+    }
+
+    /**
+     * @param $additionalDocumentReference
+     * @return Invoice
+     */
+    public function setAdditionalDocumentReferences(array $additionalDocumentReferences): Invoice
+    {
+        array_push($this->additionalDocumentReferences,$additionalDocumentReferences);
+        return $this;
+    }
+    #endregion
     /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
@@ -452,7 +496,7 @@ class Invoice implements XmlSerializable
             Schema::EXT . 'UBLExtensions' => [
                 Schema::EXT . 'UBLExtension' => [
                     Schema::EXT . 'ExtensionContent' => [
-                        
+
                     ]
                 ]
             ]
@@ -462,7 +506,7 @@ class Invoice implements XmlSerializable
             Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
             Schema::CBC . 'CustomizationID' => $this->customizationID,
             Schema::CBC . 'ProfileID' => $this->profileID,
-            Schema::CBC . 'ID' => $this->id
+            Schema::CBC . 'ID' => $this->id,
         ]);
 
         if ($this->copyIndicator !== null) {
@@ -494,12 +538,29 @@ class Invoice implements XmlSerializable
         }
 
         $writer->write([
-            Schema::CBC . 'DocumentCurrencyCode' => $this->documentCurrencyCode,
+            Schema::CBC . 'Note' => $this->note,
+        ]);
+        $writer->write([
+            'name' => Schema::CBC . 'DocumentCurrencyCode',
+            'value' => $this->documentCurrencyCode,
+            'attributes' => [
+                'listAgencyName' => 'United Nations Economic Commission for Europe',
+                'listID' => 'ISO 4217 Alpha',
+                'listName' => 'Currency',
+                'listVersionID' => '2001',
+            ]
         ]);
 
         $writer->write([
             Schema::CBC . 'LineCountNumeric' => $this->lineCountNumeric,
         ]);
+
+        foreach($this->additionalDocumentReferences as $additionalDocumentReference)
+        {
+            $writer->write([
+                Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference,
+            ]);
+        }
 
         if ($this->invoicePeriod != null) {
             $writer->write([

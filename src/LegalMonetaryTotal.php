@@ -10,6 +10,8 @@ class LegalMonetaryTotal implements XmlSerializable
     private $lineExtensionAmount;
     private $taxExclusiveAmount;
     private $taxInclusiveAmount;
+    private $allowanceTotalAmount;
+    private $chargeTotalAmount;
     private $payableAmount;
 
     /**
@@ -69,6 +71,42 @@ class LegalMonetaryTotal implements XmlSerializable
     /**
      * @return float
      */
+    public function getAllowanceTotalAmount(): ?float
+    {
+        return $this->allowanceTotalAmount;
+    }
+
+    /**
+     * @param float $allowanceTotalAmount
+     * @return LegalMonetaryTotal
+     */
+    public function setAllowanceTotalAmount(?float $allowanceTotalAmount): LegalMonetaryTotal
+    {
+        $this->allowanceTotalAmount = $allowanceTotalAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getChargeTotalAmount(): ?float
+    {
+        return $this->chargeTotalAmount;
+    }
+
+    /**
+     * @param float $chargeTotalAmount
+     * @return LegalMonetaryTotal
+     */
+    public function setChargeTotalAmount(?float $chargeTotalAmount): LegalMonetaryTotal
+    {
+        $this->chargeTotalAmount = $chargeTotalAmount;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
     public function getPayableAmount(): ?float
     {
         return $this->payableAmount;
@@ -112,6 +150,22 @@ class LegalMonetaryTotal implements XmlSerializable
             [
                 'name' => Schema::CBC . 'TaxInclusiveAmount',
                 'value' => number_format($this->taxInclusiveAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+
+            ],
+            [
+                'name' => Schema::CBC . 'AllowanceTotalAmount',
+                'value' => number_format($this->allowanceTotalAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+
+            ],
+            [
+                'name' => Schema::CBC . 'ChargeTotalAmount',
+                'value' => number_format($this->chargeTotalAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => Generator::$currencyID
                 ]

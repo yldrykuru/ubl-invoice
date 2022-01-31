@@ -22,7 +22,7 @@ class Person implements XmlSerializable
      * @param mixed $firstName
      * @return Person
      */
-    public function setFirstName(?string $firstName): Person
+    public function setFirstName(?string $firstName = ''): Person
     {
         $this->firstName = $firstName;
         return $this;
@@ -40,7 +40,7 @@ class Person implements XmlSerializable
      * @param mixed $familyName
      * @return Country
      */
-    public function setFamilyName(?string $familyName): Person
+    public function setFamilyName(?string $familyName = ''): Person
     {
         $this->familyName = $familyName;
         return $this;

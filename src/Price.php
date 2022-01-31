@@ -82,13 +82,13 @@ class Price implements XmlSerializable
                     'currencyID' => Generator::$currencyID
                 ]
             ],
-            [
+            /*[
                 'name' => Schema::CBC . 'BaseQuantity',
                 'value' => number_format($this->baseQuantity, 2, '.', ''),
                 'attributes' => [
                     'unitCode' => $this->unitCode
                 ]
-            ]
+            ]*/
         ]);
     }
 }

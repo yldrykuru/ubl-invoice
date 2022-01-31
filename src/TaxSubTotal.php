@@ -13,6 +13,7 @@ class TaxSubTotal implements XmlSerializable
     private $taxAmount;
     private $taxCategory;
     private $percent;
+    private $calculationSequenceNumeric;
 
     /**
      * @return mixed
@@ -87,6 +88,24 @@ class TaxSubTotal implements XmlSerializable
     }
 
     /**
+     * @return int
+     */
+    public function getCalculationSequenceNumeric(): ?int
+    {
+        return $this->calculationSequenceNumeric;
+    }
+
+    /**
+     * @param int $calculationSequenceNumeric
+     * @return TaxSubTotal
+     */
+    public function setCalculationSequenceNumeric(?int $calculationSequenceNumeric): TaxSubTotal
+    {
+        $this->calculationSequenceNumeric = $calculationSequenceNumeric;
+        return $this;
+    }
+
+    /**
      * The validate function that is called during xml writing to valid the data of the object.
      *
      * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
@@ -116,31 +135,40 @@ class TaxSubTotal implements XmlSerializable
     {
         $this->validate();
 
-        $writer->write([
-            [
-                'name' => Schema::CBC . 'TaxableAmount',
-                'value' => number_format($this->taxableAmount, 2, '.', ''),
-                'attributes' => [
-                    'currencyID' => Generator::$currencyID
-                ]
-            ],
-            [
-                'name' => Schema::CBC . 'TaxAmount',
-                'value' => number_format($this->taxAmount, 2, '.', ''),
-                'attributes' => [
-                    'currencyID' => Generator::$currencyID
-                ]
-            ]
-        ]);
-
-        if ($this->percent !== null) {
+        if ($this->taxAmount or $this->taxableAmount != 0)
+        {
             $writer->write([
-                Schema::CBC . 'Percent' => $this->percent
+                [
+                    'name' => Schema::CBC . 'TaxableAmount',
+                    'value' => number_format($this->taxableAmount, 2, '.', ''),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ],
+                [
+                    'name' => Schema::CBC . 'TaxAmount',
+                    'value' => number_format($this->taxAmount, 2, '.', ''),
+                    'attributes' => [
+                        'currencyID' => Generator::$currencyID
+                    ]
+                ]
             ]);
-        }
 
-        $writer->write([
-            Schema::CAC . 'TaxCategory' => $this->taxCategory
-        ]);
+            $writer->write([
+                Schema::CBC . 'CalculationSequenceNumeric' => $this->calculationSequenceNumeric
+            ]);
+            
+            if ($this->percent !== null) {
+                $writer->write([
+                    Schema::CBC . 'Percent' => $this->percent
+                ]);
+            }
+
+            $writer->write([
+                Schema::CAC . 'TaxCategory' => $this->taxCategory
+            ]);
+
+
+        }
     }
 }
