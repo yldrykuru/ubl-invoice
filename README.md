@@ -1,9 +1,9 @@
-# Yldrykuru UBL-Invoice Generator
+# UBL Fatura Oluşturucu Kütüphanesi
 
-sabre/xml Kütüphanesine ihtiyaç duyuyor.
+Bu kütüphane, fatura oluşturmak için kullanılan UBL (Universal Business Language) standardına uygun XML faturalarını oluşturmanıza olanak tanır.
 
-1. Direk Kullanım Örneği   
-      ```php
+## Kullanım Örneği
+```php
        $invoice = (new \Yldrykuru\Ublinvoice\Invoice())
             ->setUBLVersionID("2.1")
             ->setCustomizationID("TR1.2")
@@ -139,15 +139,18 @@ sabre/xml Kütüphanesine ihtiyaç duyuyor.
                         (new \Yldrykuru\Ublinvoice\Price())->setPriceAmount(0.15)->setUnitCode("KWH")
                     )
             ]);
-      // Test created object
-      // Use \Yldrykuru\Ublinvoice\Generator to generate an XML string
+
       $generator = new \Yldrykuru\Ublinvoice\Generator();
       $outputXMLString = $generator->invoice($invoice);
 
-      // Create PHP Native DomDocument object, that can be
-      // used to validate the generate XML
       $dom = new \DOMDocument;
       $dom->loadXML($outputXMLString);
 
       $dom->save('KAYIT PATHI');
-      ```
+```
+
+## Katkıda Bulunma
+Bu projeye katkıda bulunmaktan çekinmeyin. Sorunlar oluşturabilir, depoyu çatallayabilir ve işlevselliği geliştirmek için pull istekleri gönderebilirsiniz.
+
+## Lisans
+Bu proje MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için [LICENSE](LICENSE.md) dosyasına göz atabilirsiniz.
