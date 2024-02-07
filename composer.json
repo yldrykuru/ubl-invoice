@@ -1,11 +1,11 @@
 {
-    "name": "yldrykuru/ublinvoice",
+    "name": "yldrykuru/ubl-invoice",
     "description": "UBL-TR 2.1 Generator",
     "keywords": [
         "yldrykuru",
-        "ublinvoice"
+        "ubl-invoice"
     ],
-    "homepage": "https://github.com/yldrykuru/ublinvoice",
+    "homepage": "https://github.com/yldrykuru/ubl-invoice",
     "license": "MIT",
     "type": "library",
     "authors": [
